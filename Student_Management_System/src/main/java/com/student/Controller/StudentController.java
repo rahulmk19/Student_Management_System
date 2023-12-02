@@ -34,6 +34,7 @@ public class StudentController {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
 
 	@GetMapping("/student")
 	public ResponseEntity<List<Student>> getAllStudents() {
