@@ -1,22 +1,7 @@
-
-function createStudent(studentData) {
-    $.ajax({
-        url: 'http://localhost:8080/student',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(studentData),
-        success: function (data) {
-            console.log('Student created successfully:', data);
-            fetchStudents();
-        },
-        error: function (error) {
-            console.error('Error creating student:', error);
-        }
-    });
-}
+let editingStudentId = null;
 
 $('#userForm').submit(function (event) {
-    event.preventDefault(); // Prevents the default form submission
+    event.preventDefault();
 
     const formData = {
         firstName: $('#firstName').val(),
@@ -27,8 +12,79 @@ $('#userForm').submit(function (event) {
         address: $('#address').val()
     };
 
-    createStudent(formData);
+    if (editingStudentId) {
+        updateStudent(editingStudentId, formData);
+    } else {
+        createStudent(formData);
+    }
 });
+
+function createStudent(studentData) {
+    $.ajax({
+        url: 'http://localhost:8080/student',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(studentData),
+        success: function (data) {
+            console.log('Student created successfully:', data);
+            fetchStudents();
+            clearForm();
+        },
+        error: function (error) {
+            console.log(error.json());
+            window.alert('Student found duplicate', error);
+            
+        }
+    });
+}
+
+function editStudent(studentId) {
+    editingStudentId = studentId;
+
+    $.ajax({
+        url: `http://localhost:8080/student/${studentId}`,
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            $('#firstName').val(data.firstName);
+            $('#lastName').val(data.lastName);
+            $('#phone').val(data.phone);
+            $('#dob').val(data.dob);
+            $('#gender').val(data.gender);
+            $('#address').val(data.address);
+        },
+        error: function (error) {
+            console.error('Error fetching student details for editing:', error);
+        }
+    });
+}
+
+function updateStudent(studentId, studentData) {
+    $.ajax({
+        url: `http://localhost:8080/student/${studentId}`,
+        type: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify(studentData),
+        success: function (data) {
+            console.log('Student updated successfully:', data);
+            fetchStudents();
+            clearForm();
+        },
+        error: function (error) {
+            console.error('Error updating student:', error);
+        }
+    });
+}
+
+function clearForm() {
+    $('#firstName').val('');
+    $('#lastName').val('');
+    $('#phone').val('');
+    $('#dob').val('');
+    $('#gender').val('');
+    $('#address').val('');
+    editingStudentId = null;
+}
 
 
 // ------------------------------------------------
@@ -84,20 +140,18 @@ function displayStudents(students) {
     studentListContainer.append(table);
 }
 
+// ------------------------------------------------------------------------
 
-let editingStudentId = null;
 
 function editStudent(studentId) {
-    // Set the global variable to keep track of the student being edited
     editingStudentId = studentId;
 
-    // Retrieve the student details using AJAX
     $.ajax({
         url: `http://localhost:8080/student/${studentId}`,
         type: 'GET',
         dataType: 'json',
         success: function (data) {
-            // Pre-fill the form with the student details
+
             $('#firstName').val(data.firstName);
             $('#lastName').val(data.lastName);
             $('#phone').val(data.phone);
@@ -107,46 +161,6 @@ function editStudent(studentId) {
         },
         error: function (error) {
             console.error('Error fetching student details for editing:', error);
-        }
-    });
-}
-
-// Modify the form submission to handle both adding and updating students
-$('#userForm').submit(function (event) {
-    event.preventDefault(); // Prevents the default form submission
-
-    const formData = {
-        firstName: $('#firstName').val(),
-        lastName: $('#lastName').val(),
-        phone: $('#phone').val(),
-        dob: $('#dob').val(),
-        gender: $('#gender').val(),
-        address: $('#address').val()
-    };
-
-    if (editingStudentId) {
-        // If editingStudentId is set, update the existing student
-        updateStudent(editingStudentId, formData);
-    } else {
-        // If editingStudentId is not set, create a new student
-        createStudent(formData);
-    }
-});
-
-function updateStudent(studentId, studentData) {
-    $.ajax({
-        url: `http://localhost:8080/student/${studentId}`,
-        type: 'PUT', // Assuming your server supports PUT for updating
-        contentType: 'application/json',
-        data: JSON.stringify(studentData),
-        success: function (data) {
-            console.log('Student updated successfully:', data);
-            fetchStudents();
-            // Reset the global variable after updating
-            editingStudentId = null;
-        },
-        error: function (error) {
-            console.error('Error updating student:', error);
         }
     });
 }

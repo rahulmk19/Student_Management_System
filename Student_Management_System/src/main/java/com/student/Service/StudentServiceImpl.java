@@ -20,12 +20,10 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public Student addStudent(Student student) {
-	    // Check if a student with the same phone number already exists
 	    Optional<List<Student>> existingStudentOptional = studentRepo.findByPhone(student.getPhone());
 
 	    if (existingStudentOptional.isPresent()) {
 	        List<Student> existingStudents = existingStudentOptional.get();
-	        // Assuming you want to check all existing students for the same phone number
 	        for (Student existingStudent : existingStudents) {
 	            if (existingStudent.getFirstName().equals(student.getFirstName())
 	                    && existingStudent.getLastName().equals(student.getLastName())) {
@@ -34,7 +32,6 @@ public class StudentServiceImpl implements StudentService {
 	        }
 	    }
 
-	    // No existing student with the same phone number and name, proceed to save
 	    try {
 	        return studentRepo.save(student);
 	    } catch (Exception e) {
