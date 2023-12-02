@@ -1,56 +1,83 @@
-# Student_Management_System
-A web page for managing students with basic CRUD operations. The user can add a new student through a form. Existing students are displayed in a table with options to edit and delete.
+# Student Management System
 
-#Technologies Used
-Backend: Spring Boot, Java, JPA, Hibernate, MySQL
-Frontend: HTML, CSS, AJAX and JavaScript
+A web application for managing students with basic CRUD operations. Users can add new students through a form, and existing students are displayed in a table with options to edit and delete.
 
-The API documentation is available at the following URL:
+## Technologies Used
 
-#Deployed
-Deployed Front-End : https://fanciful-yeot-67c9b6.netlify.app
-Deployed Back-End : studentmanagementsystem-production-0c6a.up.railway.app
+**Backend:**
+- Spring Boot
+- Java
+- JPA
+- Hibernate
+- MySQL
 
-#API Endpoints
+**Frontend:**
+- HTML
+- CSS
+- AJAX
+- JavaScript
 
-# API Endpoint Postman When deployed with Railway App
-GET	- https://studentmanagementsystem-production-0c6a.up.railway.app/student
-POST- https://studentmanagementsystem-production-0c6a.up.railway.app/student
-PUT - https://studentmanagementsystem-production-0c6a.up.railway.app/student/{studentId} 
-DELETE - https://studentmanagementsystem-production-0c6a.up.railway.app/student/{studentId}
+## Deployed
 
-# API Endpoint Postman When use local database
-GET	- http://localhost:8080/student
-POST- http://localhost:8080/student
-PUT - http://localhost:8080/student/{studentId} 
-DELETE - http://localhost:8080/student/{studentId}
+**Front-End:**
+[Student Management System Frontend](https://fanciful-yeot-67c9b6.netlify.app)
 
-Add a New Student:
-POST http://localhost:8080/student
-Body:
+**Back-End:**
+[Student Management System Backend](https://studentmanagementsystem-production-0c6a.up.railway.app)
 
+## API Endpoints
+
+### When deployed with Railway App
+
+- **GET:** https://studentmanagementsystem-production-0c6a.up.railway.app/student
+- **POST:** https://studentmanagementsystem-production-0c6a.up.railway.app/student
+- **PUT:** https://studentmanagementsystem-production-0c6a.up.railway.app/student/{studentId}
+- **DELETE:** https://studentmanagementsystem-production-0c6a.up.railway.app/student/{studentId}
+
+### When using a local database
+
+- **GET:** http://localhost:8080/student
+- **POST:** http://localhost:8080/student
+- **PUT:** http://localhost:8080/student/{studentId}
+- **DELETE:** http://localhost:8080/student/{studentId}
+
+## Add a New Student
+
+**POST:** http://localhost:8080/student
+
+**Body:**
+```json
 {
-  "firstname": "John",
-  "lastname": "Doe",
-  "phone": "+1234567890",
-  "gender": "MALE",
-  "dob": "1990-01-01",
-  "address": "123 Main Street"
-}
-
-Update a Student:
-PUT http://localhost:8080/student/{student-id}
-Body:
-
-{
-  "firstname": "Jane",
-  "lastname": "Doe",
-  "phone": "+9876543210",
+  "firstname": "Rahul",
+  "lastname": "Thakur",
+  "phone": "+911234567890",
   "gender": "FEMALE",
-  "dob": "1995-02-02",
-  "address": "456 Elm Street"
+  "dob": "1999-03-19",
+  "address": "Bettiah, Bihar"
 }
-Delete a Student:
-DELETE http://localhost:8080/student/{student-id}
 
-#Special Thanks to visit on my profile and explore my project.
+## Update a Student
+
+**PUT:** http://localhost:8080/student/{student-Id}
+
+**Body:**
+```json
+{
+  "firstname": "Rahul",
+  "lastname": "Thakur",
+  "phone": "+917667869850",
+  "gender": "MALE",
+  "dob": "1999-03-19",
+  "address": "Bettiah, Bihar"
+}
+
+## Delete a Student
+
+**DELETE:** http://localhost:8080/student/{student-Id}
+
+## Get All Students
+
+**GET:** http://localhost:8080/student/{student-Id}
+
+#Message
+Thank you so much for taking the time to visit my profile and delve into the project. Your interest is truly appreciated! If you have any questions or feedback, feel free to reach out. Happy exploring!
