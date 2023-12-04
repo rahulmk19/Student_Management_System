@@ -21,7 +21,7 @@ $('#userForm').submit(function (event) {
 
 function createStudent(studentData) {
     $.ajax({
-        url: 'https://studentmanagementsystem-production-0c6a.up.railway.app/student',
+        url: 'studentmanagementsystem-production-0c6a.up.railway.app/student',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(studentData),
@@ -29,20 +29,23 @@ function createStudent(studentData) {
             console.log('Student created successfully:', data);
             fetchStudents();
             clearForm();
+            window.alert("Student added Successfully...")
         },
-        error: function (error) {
-            console.log(error.json());
-            window.alert('Student found duplicate', error);
-            
+        error: function (xhr, textStatus, errorThrown) {
+            console.log(xhr.status + ': ' + xhr.responseText);
+            if (xhr.status === 400) {
+                window.alert(xhr.responseText);
+            } else {
+                window.alert('An error occurred while adding the student.');
+            }
         }
     });
 }
-
 function editStudent(studentId) {
     editingStudentId = studentId;
 
     $.ajax({
-        url: `https://studentmanagementsystem-production-0c6a.up.railway.app/student/${studentId}`,
+        url: `studentmanagementsystem-production-0c6a.up.railway.app/student/${studentId}`,
         type: 'GET',
         dataType: 'json',
         success: function (data) {
@@ -59,9 +62,10 @@ function editStudent(studentId) {
     });
 }
 
+
 function updateStudent(studentId, studentData) {
     $.ajax({
-        url: `https://studentmanagementsystem-production-0c6a.up.railway.app/student/${studentId}`,
+        url: `studentmanagementsystem-production-0c6a.up.railway.app/student/${studentId}`,
         type: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify(studentData),
@@ -69,9 +73,16 @@ function updateStudent(studentId, studentData) {
             console.log('Student updated successfully:', data);
             fetchStudents();
             clearForm();
+            window.alert("Student Updated Successfully...")
         },
-        error: function (error) {
-            console.error('Error updating student:', error);
+        
+        error: function (xhr, textStatus, errorThrown) {
+            console.log(xhr.status + ': ' + xhr.responseText);
+            if (xhr.status === 400) {
+                window.alert(xhr.responseText);
+            } else {
+                window.alert('An error occurred while adding the student.');
+            }
         }
     });
 }
@@ -90,7 +101,7 @@ function clearForm() {
 // ------------------------------------------------
 function fetchStudents() {
     $.ajax({
-        url: 'https://studentmanagementsystem-production-0c6a.up.railway.app/student',
+        url: 'studentmanagementsystem-production-0c6a.up.railway.app/student',
         type: 'GET',
         dataType: 'json',
         success: function (data) {
@@ -105,6 +116,16 @@ function fetchStudents() {
 
 function displayStudents(students) {
     console.log(students);
+   let student2 = students.sort((a,b) => {
+        if(a.id > b.id){
+            return -1;
+        }else if(b.id > a.id){
+            return 1;
+        }else{
+            return 0;
+        }
+    });
+    console.log(student2);
     const studentListContainer = $('.student-list');
 
 
@@ -122,7 +143,7 @@ function displayStudents(students) {
     table.append(tableHeader);
 
 
-    students.forEach(student => {
+    student2.forEach(student => {
         const row = $('<tr>').addClass('student-table-row');
     
         row.append(`<td>${student.id}</td>`);
@@ -131,7 +152,7 @@ function displayStudents(students) {
         row.append(`<td>${student.dob}</td>`);
         row.append(`<td>${student.gender}</td>`);
         row.append(`<td>${student.address}</td>`);
-        row.append(`<td><button onclick="editStudent(${student.id})">Edit</button></td>`);
+        row.append(`<td><a href='#heading'><button onclick="editStudent(${student.id})">Edit</button></a></td>`);
         row.append(`<td><button style='background-color: red; color: white;' onclick="deleteStudent(${student.id})">Delete</button></td>`);
     
         table.append(row);
@@ -147,7 +168,7 @@ function editStudent(studentId) {
     editingStudentId = studentId;
 
     $.ajax({
-        url: `https://studentmanagementsystem-production-0c6a.up.railway.app/student/${studentId}`,
+        url: `studentmanagementsystem-production-0c6a.up.railway.app/student/${studentId}`,
         type: 'GET',
         dataType: 'json',
         success: function (data) {
@@ -175,7 +196,7 @@ function deleteStudent(studentId) {
     }
 
     $.ajax({
-        url: `https://studentmanagementsystem-production-0c6a.up.railway.app/student/${studentId}`,
+        url: `studentmanagementsystem-production-0c6a.up.railway.app/student/${studentId}`,
         type: 'DELETE',
         success: function (data) {
             console.log('Student deleted successfully:', data);

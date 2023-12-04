@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <h1>Student Management System</h1>
+    <h1 id="heading">Student Management System</h1>
     <form id="userForm" action="submit.php" method="post" onsubmit="return validateForm()">
         <label for="firstName">First Name:</label>
         <input type="text" id="firstName" name="firstName" required><br>
@@ -23,9 +23,9 @@
 
         <label for="gender">Gender:</label>
         <select id="gender" name="gender" required>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other">Other</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
         </select><br>
 
         <label for="address">Address:</label>
