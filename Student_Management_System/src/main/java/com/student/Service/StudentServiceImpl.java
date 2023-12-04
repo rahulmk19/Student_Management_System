@@ -1,5 +1,6 @@
 package com.student.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,25 +21,31 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public Student addStudent(Student student) {
-	    Optional<List<Student>> existingStudentOptional = studentRepo.findByPhone(student.getPhone());
+		LocalDate currentDate = LocalDate.now();
+		LocalDate fourYearsAgo = currentDate.minusYears(4);
 
-	    if (existingStudentOptional.isPresent()) {
-	        List<Student> existingStudents = existingStudentOptional.get();
-	        for (Student existingStudent : existingStudents) {
-	            if (existingStudent.getFirstName().equals(student.getFirstName())
-	                    && existingStudent.getLastName().equals(student.getLastName())) {
-	                throw new StudentException("Student already registered");
-	            }
-	        }
-	    }
+		if (student.getDob().isAfter(fourYearsAgo)) {
+			throw new StudentException("Student is not eligible for admission. Age must be at least 4 years.");
+		}
 
-	    try {
-	        return studentRepo.save(student);
-	    } catch (Exception e) {
-	        throw new StudentException("Error occurred while adding a student.", e);
-	    }
+		Optional<List<Student>> existingStudentOptional = studentRepo.findByPhone(student.getPhone());
+
+		if (existingStudentOptional.isPresent()) {
+			List<Student> existingStudents = existingStudentOptional.get();
+			for (Student existingStudent : existingStudents) {
+				if (existingStudent.getFirstName().equals(student.getFirstName())
+						&& existingStudent.getLastName().equals(student.getLastName())) {
+					throw new StudentException("Student already registered");
+				}
+			}
+		}
+
+		try {
+			return studentRepo.save(student);
+		} catch (Exception e) {
+			throw new StudentException("Error occurred while adding a student.", e);
+		}
 	}
-
 
 	@Override
 	public List<Student> getAllStudents() {
@@ -66,6 +73,14 @@ public class StudentServiceImpl implements StudentService {
 				throw new StudentException("Student not found with ID: " + id);
 			}
 
+			LocalDate currentDate = LocalDate.now();
+			LocalDate fourYearsAgo = currentDate.minusYears(4);
+
+			if (updatedStudent.getDob().isAfter(fourYearsAgo)) {
+				throw new StudentException(
+						"Updated student is not eligible for admission. Age must be at least 4 years.");
+			}
+
 			existingStudent.setFirstName(updatedStudent.getFirstName());
 			existingStudent.setLastName(updatedStudent.getLastName());
 			existingStudent.setPhone(updatedStudent.getPhone());
@@ -75,7 +90,7 @@ public class StudentServiceImpl implements StudentService {
 
 			return studentRepo.save(existingStudent);
 		} catch (Exception e) {
-			throw new StudentException("Error occurred while updating a student.", e);
+			throw new StudentException(e.getMessage());
 		}
 	}
 

@@ -18,23 +18,26 @@ import com.student.Exception.StudentException;
 import com.student.Model.Student;
 import com.student.Service.StudentService;
 
+import jakarta.validation.Valid;
+
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins = "*")
 public class StudentController {
 
 	@Autowired
 	private StudentService studentService;
 
 	@PostMapping("/student")
-	public ResponseEntity<Student> addStudent(@RequestBody Student student) {
+	public ResponseEntity<Object> addStudent(@Valid @RequestBody Student student) {
 		try {
 			Student addedStudent = studentService.addStudent(student);
 			return new ResponseEntity<>(addedStudent, HttpStatus.CREATED);
 		} catch (StudentException e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return new ResponseEntity<>("An unexpected error occurred.", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
 
 	@GetMapping("/student")
 	public ResponseEntity<List<Student>> getAllStudents() {
@@ -61,12 +64,14 @@ public class StudentController {
 	}
 
 	@PutMapping("/student/{id}")
-	public ResponseEntity<Student> updateStudent(@PathVariable Integer id, @RequestBody Student updatedStudent) {
+	public ResponseEntity<Object> updateStudent(@PathVariable Integer id, @Valid @RequestBody Student updatedStudent) {
 		try {
 			Student updated = studentService.updateStudent(id, updatedStudent);
 			return new ResponseEntity<>(updated, HttpStatus.OK);
 		} catch (StudentException e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return new ResponseEntity<>("An unexpected error occurred.", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
