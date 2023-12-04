@@ -21,7 +21,7 @@ $('#userForm').submit(function (event) {
 
 function createStudent(studentData) {
     $.ajax({
-        url: 'studentmanagementsystem-production-0c6a.up.railway.app/student',
+        url: 'https://studentmanagementsystem-production-0c6a.up.railway.app/student',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(studentData),
@@ -45,7 +45,7 @@ function editStudent(studentId) {
     editingStudentId = studentId;
 
     $.ajax({
-        url: `studentmanagementsystem-production-0c6a.up.railway.app/student/${studentId}`,
+        url: `https://studentmanagementsystem-production-0c6a.up.railway.app/student/${studentId}`,
         type: 'GET',
         dataType: 'json',
         success: function (data) {
@@ -65,7 +65,7 @@ function editStudent(studentId) {
 
 function updateStudent(studentId, studentData) {
     $.ajax({
-        url: `studentmanagementsystem-production-0c6a.up.railway.app/student/${studentId}`,
+        url: `https://studentmanagementsystem-production-0c6a.up.railway.app/student/${studentId}`,
         type: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify(studentData),
@@ -101,7 +101,7 @@ function clearForm() {
 // ------------------------------------------------
 function fetchStudents() {
     $.ajax({
-        url: 'studentmanagementsystem-production-0c6a.up.railway.app/student',
+        url: 'https://studentmanagementsystem-production-0c6a.up.railway.app/student',
         type: 'GET',
         dataType: 'json',
         success: function (data) {
@@ -168,7 +168,7 @@ function editStudent(studentId) {
     editingStudentId = studentId;
 
     $.ajax({
-        url: `studentmanagementsystem-production-0c6a.up.railway.app/student/${studentId}`,
+        url: `https://studentmanagementsystem-production-0c6a.up.railway.app/student/${studentId}`,
         type: 'GET',
         dataType: 'json',
         success: function (data) {
@@ -196,7 +196,7 @@ function deleteStudent(studentId) {
     }
 
     $.ajax({
-        url: `studentmanagementsystem-production-0c6a.up.railway.app/student/${studentId}`,
+        url: `https://studentmanagementsystem-production-0c6a.up.railway.app/student/${studentId}`,
         type: 'DELETE',
         success: function (data) {
             console.log('Student deleted successfully:', data);
